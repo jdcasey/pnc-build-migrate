@@ -49,7 +49,7 @@ class Config:
 	def expect(self, data, key):
 		v = data.get(key)
 		if v is None:
-			expectations.append(key)
+			self.expectations.append(key)
 
 		return v
 
