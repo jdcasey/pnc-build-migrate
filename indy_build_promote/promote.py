@@ -47,7 +47,7 @@ def promote_builds(config, input_file, progress_file, fail_file):
 
     build = pop_build(input_file, progress_file)
     while build is not None:
-        print(f"Next build to promote is: {build}")
+        print(f"Promoting build: {build}")
         promote_build(build, group, config, pod, progress_file)
 
         build = pop_build(input_file, progress_file)
