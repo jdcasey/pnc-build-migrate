@@ -61,7 +61,7 @@ try:
             current_in = os.path.join(curr_dir, IN)
             print(f"Writing pending list to: {current_in}")
             with open(current_in, 'w') as f:
-                f.write("\n".join(members))
+                f.write("\n".join(pending))
 
             promote_builds(cfg, IN, OUT, ERR)
 
