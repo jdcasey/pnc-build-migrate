@@ -12,8 +12,7 @@ def promote_build(build, group, config, progress_file, fail_file):
         group['constituents'] = [c for c in group['constituents'] if c != build]
         success = update_group(group, config, progress_file, build)
         if success is False:
-            print(f"Failed to update group: {config.group} after promotion of: {build}")
-            exit(3)
+            raise Exception(f"Failed to update group: {config.group} after promotion of: {build}")
 
         print(f"Promotion of {build} is complete.")
 
@@ -30,8 +29,7 @@ def promote_builds(config, input_file, progress_file, fail_file):
     print(f"Retrieving group definition for: {groupname}")
     group = get_group(config)
     if group is None:
-        print("Promotion failed with missing group.")
-        exit(2)
+        raise Exception("Promotion failed with missing group.")
 
     target_key = f"maven:hosted:{config.target_repo}"
     if target_key not in group['constituents']:
@@ -39,8 +37,7 @@ def promote_builds(config, input_file, progress_file, fail_file):
         group['constituents'].insert(0, target_key)
         success = update_group(group, config, fail_file)
         if success is False:
-            print(f"Failed to update group: {config.group} with target-repo: {target_key}")
-            exit(3)
+            raise Exception(f"Failed to update group: {config.group} with target-repo: {target_key}")
 
     build = pop_build(input_file, progress_file)
     while build is not None:

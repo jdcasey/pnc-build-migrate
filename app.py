@@ -14,11 +14,10 @@ IN='repo.lst.IN'
 OUT='repo.lst.OUT'
 ERR='repo.lst.ERR'
 
-try:
-    while True:
+while True:
+    try:
         if not os.path.exists(CFG):
-            print(f"Cannot load configuration from: {CFG}")
-            exit(-1)
+            raise Exception(f"Cannot load configuration from: {CFG}")
 
         cfg = load_config_map(CFG)
 
@@ -65,7 +64,7 @@ try:
 
             promote_builds(cfg, IN, OUT, ERR)
 
-except Exception:
-    print(traceback.format_exc())
-    while True:
-        time.sleep(5)
+    except Exception:
+        print(traceback.format_exc())
+        print("Retrying execution in 4 hours")
+        time.sleep(60*60*4)
