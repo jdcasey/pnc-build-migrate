@@ -1,5 +1,5 @@
 from os.path import join
-from os import getcwd
+import os
 from ruamel.yaml import YAML
 
 # group: pnc-builds
@@ -14,7 +14,7 @@ PROJECT = 'project'
 TOKEN = 'token'
 URL = 'url'
 
-DEFAULT_CONFIG_FILE = join(getcwd(), 'config.yml')
+DEFAULT_CONFIG_FILE = join(os.getcwd(), 'config.yml')
 DEFAULT_CONFIG_DIR = "/opt/config"
 
 def load(config_file=DEFAULT_CONFIG_FILE):
