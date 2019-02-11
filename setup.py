@@ -20,6 +20,7 @@ setup(
     author_email='jdcasey@commonjava.org',
     url='https://github.com/Commonjava/indy_build_promote',
     license='APLv2',
+    packages = find_packages(),
     install_requires=[
         'click',
         'requests',
