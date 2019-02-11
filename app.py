@@ -41,8 +41,9 @@ try:
                 pending.append(m.split(':')[2])
 
     else:
-        last_dir = os.path.join(DIR, subs[-1])
-        next_dirname = str(int(last_dir)+1).zfill(4)
+        last_dirname = subs[-1]
+        last_dir = os.path.join(DIR, last_dirname)
+        next_dirname = str(int(last_dirname)+1).zfill(4)
 
         print(f"Merging pending and failed repos from last pass ({last_dir}) to generate the next list to start promoting")
 
