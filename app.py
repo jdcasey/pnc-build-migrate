@@ -5,6 +5,7 @@ from indy_build_promote.config import load_config_map
 from indy_build_promote.promote import promote_builds
 import os
 import time
+import traceback
 
 DIR='/opt/data'
 CFG = '/opt/config'
@@ -60,12 +61,12 @@ try:
     current_in = os.path.join(curr_dir, IN)
     print(f"Writing pending list to: {current_in}")
     with open(current_in, 'w') as f:
-        o.write("\n".join(members))
+        f.write("\n".join(members))
 
     promote_builds(cfg, IN, OUT, ERR)
 
-except Exception as e:
-    print(f"Error running promotions: {e}")
+except Exception:
+    print(traceback.format_exc())
 finally:
     while True:
         time.sleep(5)
