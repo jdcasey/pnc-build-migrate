@@ -62,7 +62,9 @@ while True:
             with open(current_in, 'w') as f:
                 f.write("\n".join(pending))
 
-            promote_builds(cfg, IN, OUT, ERR)
+            current_out = os.path.join(curr_dir, OUT)
+            current_err = os.path.join(curr_dir, ERR)
+            promote_builds(cfg, current_in, current_out, current_err)
 
     except Exception:
         print(traceback.format_exc())
