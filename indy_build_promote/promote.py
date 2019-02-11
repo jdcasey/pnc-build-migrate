@@ -1,10 +1,10 @@
 import time
 from indy_build_promote.rest import (do_promote, update_group, get_group)
-from indy_build_promote.builds import (pop_build, get_pod)
+from indy_build_promote.builds import (pop_build)
 
 REQUEST_TIMEOUT_BACKOFF = 10*60
 
-def promote_build(build, group, config, pod, progress_file, fail_file):
+def promote_build(build, group, config, progress_file, fail_file):
     status = do_promote(build, config, fail_file)
 
     if status == 200 or status == 504:
@@ -26,9 +26,6 @@ def promote_build(build, group, config, pod, progress_file, fail_file):
 def promote_builds(config, input_file, progress_file, fail_file):
     project = config.project
     groupname = config.group
-    print(f"Retrieving Indy pod name in project: {project}")
-    pod = get_pod(config)
-    print(f"Project {project} Indy pod is: {pod}")
 
     print(f"Retrieving group definition for: {groupname}")
     group = get_group(config)
@@ -48,6 +45,6 @@ def promote_builds(config, input_file, progress_file, fail_file):
     build = pop_build(input_file, progress_file)
     while build is not None:
         print(f"Promoting build: {build}")
-        promote_build(build, group, config, pod, progress_file)
+        promote_build(build, group, config, progress_file)
 
         build = pop_build(input_file, progress_file)
