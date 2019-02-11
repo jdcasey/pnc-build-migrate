@@ -6,11 +6,12 @@ from indy_build_promote.builds import list_builds
 
 @click.command()
 @click.option('-c', '--config', default=DEFAULT_CONFIG_FILE, usage='Alternative configuration file', type=click.File('r'))
-@click.argument('input_file', required=True, usage='File containing the list of hosted repositories whose content you wish to list')
-@click.argument('progress_file', required=True, usage='File containing the list of repos successfully listed')
-def promote(config, input_file, progress_file):
+@click.argument('input_file', required=True, usage='File containing the list of hosted repositories whose content you wish to promote')
+@click.argument('progress_file', required=True, usage='File containing the list of repos successfully promoted')
+@click.argument('fail_file', required=True, usage='File containing the list of repos we could not promote')
+def promote(config, input_file, progress_file, fail_file):
 	cfg = load(config_file)
-	promote_builds(cfg, input_file, progress_file)
+	promote_builds(cfg, input_file, progress_file, fail_file)
 
 @click.command()
 @click.option('-c', '--config', default=DEFAULT_CONFIG_FILE, usage='Alternative configuration file', type=click.File('r'))

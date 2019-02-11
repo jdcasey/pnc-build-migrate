@@ -3,7 +3,7 @@ import json
 
 PROMOTE_TIMEOUT = 30*60 # 30 minutes, expressed in seconds
 
-def do_promote(build, config, progress_file):
+def do_promote(build, config, fail_file):
     token = config.token
     base_url = config.url
     target_repo = config.target_repo
@@ -35,12 +35,12 @@ def do_promote(build, config, progress_file):
             success = False
 
     if success is False:
-        mark_failed(build, progress_file)
+        mark_failed(build, fail_file)
 
     print("Promotion succeeded!")
     return status
 
-def get_group(config, progress_file):
+def get_group(config):
     token = config.token
     base_url = config.url
     group = config.group
@@ -83,7 +83,7 @@ def save_group(config, out_file):
     with open(out_file, 'w') as f:
         f.write(response.text)
 
-def update_group(group, config, progress_file, build=None):
+def update_group(group, config, fail_file, build=None):
     token = config.token
     base_url = config.url
     groupname = config.group
@@ -101,7 +101,7 @@ def update_group(group, config, progress_file, build=None):
     if status != 200:
         if build is not None:
             print(f"Build {build} failed promotion with: {status}")
-            mark_failed(build, progress_file)
+            mark_failed(build, fail_file)
         else:
             print(f"Failed to update group: {groupname} with: {status}")
         return False

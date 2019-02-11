@@ -15,18 +15,44 @@ TOKEN = 'token'
 URL = 'url'
 
 DEFAULT_CONFIG_FILE = join(getcwd(), 'config.yml')
+DEFAULT_CONFIG_DIR = "/opt/config"
 
 def load(config_file=DEFAULT_CONFIG_FILE):
 	with open(config_file) as f:
 		y = YAML(typ='safe')
 		return Config( y.load(f) )
 
+def load_config_map(config_dir=DEFAULT_CONFIG_DIR):
+	data = {}
+	for filename in os.listdir(config_dir):
+		with open(filename) as f:
+			v = f.read()
+			if v.endswith("\n"):
+				v = v.rstrip()
+			data[filename] = v
+
+	return Config( data )
+
 class Config:
 	def __init__(self, data):
-		self.group = data.get(GROUP)
-		self.target_repo = data.get(TARGET_REPO)
-		self.project = data.get(PROJECT)
-		self.token = data.get(TOKEN)
-		self.url = data.get(URL)
+		self.expectations = []
+
+		self.group = self.expect(data, GROUP)
+		self.target_repo = self.expect(data, TARGET_REPO)
+		self.project = self.expect(data, PROJECT)
+		self.token = self.expect(data, TOKEN)
+		self.url = self.expect(data, URL)
+		self.check_expectations()
+
+	def expect(self, data, key):
+		v = data.get(key)
+		if v is None:
+			expectations.append(key)
+
+		return v
+
+	def check_expectations(self):
+		if len(self.expectations) > 0:
+			raise f"The following configurations were missing: {self.expectations}"
 
 

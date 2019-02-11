@@ -51,8 +51,8 @@ def list_files(build, config, pod):
     files = output.stdout.decode('utf-8').splitlines()
     return files
 
-def mark_failed(build, progress_file):
-    with open(f"{progress_file}.FAILS", 'a') as f:
+def mark_failed(build, fail_file):
+    with open(fail_file, 'a') as f:
         f.write(build + "\n")
 
 def list_builds(config, input_file, progress_file, repo_defs, build_listing_dir):
