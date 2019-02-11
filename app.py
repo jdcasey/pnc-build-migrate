@@ -35,11 +35,6 @@ try:
     pending = []
     if subs is None or len(subs) < 1:
         print(f"Cannot find previous pass at promotion. Downloading group definition for: {cfg.group} to get a list of members to start consolidating.")
-        group = rest.get_group(cfg)
-        for m in group['constituents']:
-            if 'hosted' in m and 'build' in m:
-                pending.append(m.split(':')[2])
-
     else:
         last_dirname = subs[-1]
         last_dir = os.path.join(DIR, last_dirname)
@@ -55,18 +50,26 @@ try:
                     pending += [line.rstrip() for line in f.readlines() if len(line.rstrip()) > 0]
 
     if len(pending) < 1:
-        print(f"Cannot find any repositories pending promotion")
+        print(f"Cannot find any repositories pending promotion...pulling group definition to look")
 
-    # print(f"Got pending members:\n\n{pending}")
-    curr_dir = os.path.join(DIR, next_dirname)
-    os.makedirs(curr_dir)
+        group = rest.get_group(cfg)
+        for m in group['constituents']:
+            if 'hosted' in m and 'build' in m:
+                pending.append(m.split(':')[2])
 
-    current_in = os.path.join(curr_dir, IN)
-    print(f"Writing pending list to: {current_in}")
-    with open(current_in, 'w') as f:
-        f.write("\n".join(members))
+    if len(pending) < 1:
+        print("Still cannot find any repositories to promote. Quitting.")
+    else:
+        # print(f"Got pending members:\n\n{pending}")
+        curr_dir = os.path.join(DIR, next_dirname)
+        os.makedirs(curr_dir)
 
-    promote_builds(cfg, IN, OUT, ERR)
+        current_in = os.path.join(curr_dir, IN)
+        print(f"Writing pending list to: {current_in}")
+        with open(current_in, 'w') as f:
+            f.write("\n".join(members))
+
+        promote_builds(cfg, IN, OUT, ERR)
 
 except Exception:
     print(traceback.format_exc())
