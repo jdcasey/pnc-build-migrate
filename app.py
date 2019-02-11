@@ -12,6 +12,14 @@ IN='repo.lst.IN'
 OUT='repo.lst.OUT'
 ERR='repo.lst.ERR'
 
+import time
+while True:
+    time.sleep(10)
+
+
+
+
+
 if not os.path.exists(CFG):
     print(f"Cannot load configuration from: {CFG}")
     exit(-1)
