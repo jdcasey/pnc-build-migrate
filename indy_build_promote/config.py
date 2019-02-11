@@ -55,6 +55,6 @@ class Config:
 
 	def check_expectations(self):
 		if len(self.expectations) > 0:
-			raise f"The following configurations were missing: {self.expectations}"
+			raise Exception(f"The following configurations were missing: {self.expectations}")
 
 
