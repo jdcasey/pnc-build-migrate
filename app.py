@@ -49,8 +49,10 @@ try:
 
         files = [os.path.join(last_dir, IN), os.path.join(last_dir, ERR)]
         for filename in files:
-            with open(filename) as f:
-                pending += [line.rstrip() for line in f.readlines() if len(line.rstrip()) > 0]
+            if os.path.exists(filename):
+                print(f"Reading pending promotions from: {filename}")
+                with open(filename) as f:
+                    pending += [line.rstrip() for line in f.readlines() if len(line.rstrip()) > 0]
 
     if len(pending) < 1:
         print(f"Cannot find any repositories pending promotion")
