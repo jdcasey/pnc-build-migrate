@@ -1,8 +1,8 @@
 import click
 import os
-from indy_build_promote.config import (load, DEFAULT_CONFIG_FILE)
-from indy_build_promote.promote import promote_builds
-from indy_build_promote.builds import list_builds
+from config import (load, DEFAULT_CONFIG_FILE)
+from promote import promote_builds
+from builds import list_builds
 
 @click.command()
 @click.option('-c', '--config', default=DEFAULT_CONFIG_FILE, usage='Alternative configuration file', type=click.File('r'))

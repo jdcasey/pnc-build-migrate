@@ -1,6 +1,6 @@
 import time
-from indy_build_promote.rest import (do_promote, update_group, get_group)
-from indy_build_promote.build import (pop_build, get_pod)
+from rest import (do_promote, update_group, get_group)
+from build import (pop_build, get_pod)
 
 REQUEST_TIMEOUT_BACKOFF = 10*60
 
