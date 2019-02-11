@@ -25,6 +25,7 @@ def load(config_file=DEFAULT_CONFIG_FILE):
 def load_config_map(config_dir=DEFAULT_CONFIG_DIR):
 	data = {}
 	for filename in os.listdir(config_dir):
+		print(f"Reading configmap file: {filename}")
 		with open(filename) as f:
 			v = f.read()
 			if v.endswith("\n"):
