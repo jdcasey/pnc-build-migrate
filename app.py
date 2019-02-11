@@ -26,7 +26,7 @@ if not os.path.exists(CFG):
 
 cfg = load_config_map(CFG)
 
-subs = reversed(sorted([d for d in os.listdir(DIR) if os.path.isdir(os.path.join(DIR, d)) and d.isdigit()]))
+subs = sorted([d for d in os.listdir(DIR) if os.path.isdir(os.path.join(DIR, d)) and d.isdigit()])
 
 next_dirname='1'
 pending = []
@@ -36,7 +36,7 @@ if subs is None or len(subs) < 1:
     pending = [m.split(':')[2] for m in group['constituents'] if 'hosted' in m and 'build' in m]
 
 else:
-    last_dir = os.path.join(DIR, subs[0])
+    last_dir = os.path.join(DIR, subs[-1])
     next_dirname = str(int(last_dir)+1)
 
     print(f"Merging pending and failed repos from last pass ({last_dir}) to generate the next list to start promoting")
