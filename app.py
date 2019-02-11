@@ -33,7 +33,9 @@ pending = []
 if subs is None or len(subs) < 1:
     print(f"Cannot find previous pass at promotion. Downloading group definition for: {cfg.group} to get a list of members to start consolidating.")
     group = rest.get_group(cfg)
-    pending = [m.split(':')[2] for m in group['constituents'] if 'hosted' in m and 'build' in m]
+    for m = group['constituents']:
+        if 'hosted' in m and 'build' in m:
+            pending.append(m.split(':')[2])
 
 else:
     last_dir = os.path.join(DIR, subs[-1])
