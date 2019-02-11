@@ -29,7 +29,7 @@ def load_config_map(config_dir=DEFAULT_CONFIG_DIR):
 			continue
 
 		print(f"Reading configmap file: {filename}")
-		with open(filename) as f:
+		with open(os.path.join(config_dir, filename)) as f:
 			v = f.read()
 			data[filename] = v
 
