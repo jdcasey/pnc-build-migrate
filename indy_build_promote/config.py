@@ -44,6 +44,8 @@ class Config:
 		self.project = self.expect(data, PROJECT)
 		self.token = self.expect(data, TOKEN)
 		self.url = self.expect(data, URL)
+		if self.url is not None and self.url.endswith('/'):
+			self.url = self.url[:-1]
 		self.check_expectations()
 
 	def expect(self, data, key):
