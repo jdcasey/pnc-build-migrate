@@ -98,7 +98,7 @@ def update_group(group, config, fail_file, build=None):
 
     response = requests.put(url, headers=headers, data=json.dumps(group), timeout=PROMOTE_TIMEOUT)
     status = response.status_code
-    if status != 200:
+    if status != 200 && status != 304:
         if build is not None:
             print(f"Build {build} failed promotion with: {status}")
             mark_failed(build, fail_file)
