@@ -12,9 +12,9 @@ IN='repo.lst.IN'
 OUT='repo.lst.OUT'
 ERR='repo.lst.ERR'
 
-import time
-while True:
-    time.sleep(10)
+# import time
+# while True:
+#     time.sleep(10)
 
 
 
