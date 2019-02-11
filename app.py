@@ -64,7 +64,7 @@ while True:
 
             current_out = os.path.join(curr_dir, OUT)
             current_err = os.path.join(curr_dir, ERR)
-            promote_builds(cfg, current_in, current_out, current_err)
+            promote_builds(len(pending), cfg, current_in, current_out, current_err)
 
     except Exception:
         print(traceback.format_exc())

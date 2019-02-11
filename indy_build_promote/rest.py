@@ -1,5 +1,6 @@
 import requests
 import json
+from indy_build_promote.builds import mark_failed
 
 PROMOTE_TIMEOUT = 30*60 # 30 minutes, expressed in seconds
 
