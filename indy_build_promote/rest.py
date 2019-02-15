@@ -7,7 +7,7 @@ PROMOTE_TIMEOUT = 30*60 # 30 minutes, expressed in seconds
 BACKOFF = 5*60
 
 PROMOTE_THREADS = 'promotion:'
-PROMOTE_LOAD = 'currentLoad'
+PROMOTE_LOAD = 'current-load'
 
 def monitor_promote_readiness(config):
     while is_promotion_ready(config) is False:
