@@ -17,7 +17,7 @@ def monitor_promote_readiness(config):
     print("Indy is ready for more promotion requests")
 
 def is_promotion_ready(config):
-    promote_load_threshold = config.promote_load_threshold
+    promote_load_threshold = int(config.promote_load_threshold)
     token = config.token
     base_url = config.url
 
