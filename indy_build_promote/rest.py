@@ -12,7 +12,7 @@ PROMOTE_LOAD = 'current-load'
 def monitor_promote_readiness(config):
     while is_promotion_ready(config) is False:
         print(f"Promotion is not ready. Re-checking in {BACKOFF} seconds")
-        time.sleep(BACKOFF)
+        sleep(BACKOFF)
 
     print("Indy is ready for more promotion requests")
 
