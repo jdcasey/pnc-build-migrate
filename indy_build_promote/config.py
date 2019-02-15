@@ -13,6 +13,7 @@ TARGET_REPO = 'target-repo'
 PROJECT = 'project'
 TOKEN = 'token'
 URL = 'url'
+PROMOTE_LOAD_THRESHOLD = 'promote-load-threshold'
 
 DEFAULT_CONFIG_FILE = join(os.getcwd(), 'config.yml')
 DEFAULT_CONFIG_DIR = "/opt/config"
@@ -44,6 +45,7 @@ class Config:
 		self.project = self.expect(data, PROJECT)
 		self.token = self.expect(data, TOKEN)
 		self.url = self.expect(data, URL)
+		self.promote_load_threshold = self.expect(data, PROMOTE_LOAD_THRESHOLD)
 		if self.url is not None and self.url.endswith('/'):
 			self.url = self.url[:-1]
 		self.check_expectations()

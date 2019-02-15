@@ -1,10 +1,11 @@
 import time
-from indy_build_promote.rest import (do_promote, update_group, get_group)
+from indy_build_promote.rest import (do_promote, update_group, get_group, monitor_promote_readiness)
 from indy_build_promote.builds import (pop_build)
 
-REQUEST_TIMEOUT_BACKOFF = 10*60
-
 def promote_build(build, group, config, progress_file, fail_file):
+    print("Checking / Waiting for Indy to be ready for next promotion.")
+    monitor_promote_readiness(config)
+
     status = do_promote(build, config, fail_file)
 
     if status == 200 or status == 504:
@@ -17,8 +18,7 @@ def promote_build(build, group, config, progress_file, fail_file):
         print(f"Promotion of {build} is complete.")
 
         if status == 504:
-            print(f"Submitted promotion timed out. Waiting {REQUEST_TIMEOUT_BACKOFF} seconds for load to clear.")
-            time.sleep(REQUEST_TIMEOUT_BACKOFF)
+            print(f"Submitted promotion timed out.")
     else:
         print(f"Promotion failed for {build}")
 
