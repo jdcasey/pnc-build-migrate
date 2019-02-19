@@ -17,39 +17,46 @@ def monitor_promote_readiness(config):
     print("Indy is ready for more promotion requests")
 
 def is_promotion_ready(config):
-    promote_load_threshold = int(config.promote_load_threshold)
-    token = config.token
-    base_url = config.url
+    retry=1
+    while retry < 3:
+        try:
+            promote_load_threshold = int(config.promote_load_threshold)
+            token = config.token
+            base_url = config.url
 
-    headers = {
-        'Authorization': f"Bearer {token}",
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+            headers = {
+                'Authorization': f"Bearer {token}",
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
 
-    url = f"{base_url}/healthcheck"
+            url = f"{base_url}/healthcheck"
 
-    print("Checking health of promote threadpool on Indy")
-    response = requests.get(url)
-    if response.status_code != 200:
-        raise Exception(f"Invalid response from Indy healthcheck: {response.status_code}")
+            print("Checking health of promote threadpool on Indy")
+            response = requests.get(url)
+            if response.status_code != 200:
+                raise Exception(f"Invalid response from Indy healthcheck: {response.status_code}")
 
-    data = response.json()
-    pool = data.get(PROMOTE_THREADS)
-    if pool is None:
-        load = 0
-    else:
-        load = pool.get(PROMOTE_LOAD)
+            data = response.json()
+            pool = data.get(PROMOTE_THREADS)
+            if pool is None:
+                load = 0
+            else:
+                load = pool.get(PROMOTE_LOAD)
 
-    if load is None:
-        load = 0
+            if load is None:
+                load = 0
 
-    if load > promote_load_threshold:
-        print(f"Current promotion load {load} is greater than back-off threshold: {promote_load_threshold}")
-        return False
+            if load > promote_load_threshold:
+                print(f"Current promotion load {load} is greater than back-off threshold: {promote_load_threshold}")
+                return False
 
-    print(f"Current promotion load {load} is within parameters.")
-    return True
+            print(f"Current promotion load {load} is within parameters.")
+            return True
+        except e:
+            print(e)
+        finally:
+            retry+=1
 
 def do_promote(build, config, fail_file):
     token = config.token
