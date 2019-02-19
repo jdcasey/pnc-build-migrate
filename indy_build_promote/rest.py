@@ -4,7 +4,7 @@ from indy_build_promote.builds import mark_failed
 from time import sleep
 
 PROMOTE_TIMEOUT = 30*60 # 30 minutes, expressed in seconds
-BACKOFF = 5*60
+BACKOFF = 30
 
 PROMOTE_THREADS = 'promotion:'
 PROMOTE_LOAD = 'current-load'
