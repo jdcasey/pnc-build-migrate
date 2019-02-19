@@ -39,7 +39,7 @@ def is_promotion_ready(config):
     if pool is None:
         load = 0
     else:
-        load = pool.get[PROMOTE_LOAD]
+        load = pool.get(PROMOTE_LOAD)
 
     if load is None:
         load = 0
