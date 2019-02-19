@@ -35,7 +35,15 @@ def is_promotion_ready(config):
         raise Exception(f"Invalid response from Indy healthcheck: {response.status_code}")
 
     data = response.json()
-    load = data[PROMOTE_THREADS][PROMOTE_LOAD]
+    pool = data.get(PROMOTE_THREADS)
+    if pool is None:
+        load = 0
+    else:
+        load = pool.get[PROMOTE_LOAD]
+
+    if load is None:
+        load = 0
+
     if load > promote_load_threshold:
         print(f"Current promotion load {load} is greater than back-off threshold: {promote_load_threshold}")
         return False
