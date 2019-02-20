@@ -6,7 +6,7 @@ from time import sleep
 PROMOTE_TIMEOUT = 30*60 # 30 minutes, expressed in seconds
 BACKOFF = 30
 
-PROMOTE_THREADS = 'promotion:'
+PROMOTE_THREADS = 'weft.ThreadPoolExecutor.promotion.promotion'
 PROMOTE_LOAD = 'current-load'
 
 def monitor_promote_readiness(config):
