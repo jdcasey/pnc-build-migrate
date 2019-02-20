@@ -53,7 +53,7 @@ def is_promotion_ready(config):
 
             print(f"Current promotion load {load} is within parameters.")
             return True
-        except e:
+        except Exception as e:
             print(e)
         finally:
             retry+=1
