@@ -21,10 +21,11 @@ while True:
 
         cfg = load_config_map(CFG)
 
-        if cfg.suspend is True:
-            while True:
-                # NOP
-                time.sleep(10)
+        while cfg.suspend is True:
+            print("Pausing because application is suspended.")
+            # NOP
+            time.sleep(30)
+            cfg = load_config_map(CFG)
 
         subs = sorted([d for d in os.listdir(DIR) if os.path.isdir(os.path.join(DIR, d)) and d.isdigit()])
 
