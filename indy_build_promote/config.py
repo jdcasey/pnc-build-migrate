@@ -48,6 +48,9 @@ class Config:
 		self.url = self.expect(data, URL)
 		self.promote_load_threshold = self.expect(data, PROMOTE_LOAD_THRESHOLD)
 		self.suspend = data.get(SUSPEND) or False
+		if self.suspend is not False:
+			if self.suspend in ('True', 'true', 'Y', 'y', 'yes'):
+				self.suspend = True
 		if self.url is not None and self.url.endswith('/'):
 			self.url = self.url[:-1]
 		self.check_expectations()
