@@ -53,7 +53,7 @@ while True:
             group = rest.get_group(cfg)
             for m in group['constituents']:
                 if 'hosted' in m and 'build' in m:
-                    pending.append(m.split(':')[2])
+                    pending.append(m)
 
         if len(pending) < 1:
             print("Still cannot find any repositories to promote. Sleeping 4 hours...")

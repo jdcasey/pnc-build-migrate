@@ -42,8 +42,9 @@ def promote_builds(total_count, config, input_file, progress_file, fail_file):
     build = pop_build(input_file, progress_file)
     count=1
     while build is not None:
-        print(f"#{count}/{total_count} Promoting build: {build}")
-        promote_build(build, group, config, progress_file, fail_file)
-        count+=1
+        if build != target_key:
+            print(f"#{count}/{total_count} Promoting build: {build}")
+            promote_build(build, group, config, progress_file, fail_file)
+            count+=1
 
         build = pop_build(input_file, progress_file)
