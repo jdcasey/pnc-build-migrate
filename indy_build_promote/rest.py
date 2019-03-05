@@ -64,7 +64,7 @@ def do_promote(build, config, fail_file):
     target_repo = config.target_repo
 
     req = {
-        'source': f"maven:hosted:{build}",
+        'source': build,
         'target': f"maven:hosted:{target_repo}"
     }
 
