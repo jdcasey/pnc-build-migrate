@@ -58,6 +58,37 @@ def is_promotion_ready(config):
         finally:
             retry+=1
 
+def mark_target_readonly(readonly, config):
+    token = config.token
+    base_url = config.url
+    target = config.target_repo
+
+    headers = {
+        'Authorization': f"Bearer {token}",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+
+    url = f"{base_url}/api/admin/stores/maven/hosted/{target}"
+
+    print(f"Retrieving group via URL:\n  {url}")
+    response = requests.get(url, headers=headers, timeout=PROMOTE_TIMEOUT)
+    status = response.status_code
+    if status != 200:
+        print(f"Failed to retrieve group: {group} with status: {response.status_code}")
+        return False
+    else:
+        data = response.json()
+        data['readonly'] = readonly
+
+        response = requests.put(url, headers=headers, data=json.dumps(data), timeout=PROMOTE_TIMEOUT)
+        status = response.status_code
+        if status not in [200, 304]:
+            print(f"Could not reset readonly flag on target: {target} to {readonly}, HTTP status: {status}")
+            return False
+
+    return True
+
 def do_promote(build, config, fail_file):
     token = config.token
     base_url = config.url
@@ -76,23 +107,28 @@ def do_promote(build, config, fail_file):
 
     url = f"{base_url}/api/promotion/paths/promote"
 
-    print(f"Running promotion of: {build} to: {target_repo}")
-    response = requests.post(url, headers=headers, data=json.dumps(req), timeout=PROMOTE_TIMEOUT)
-    status = response.status_code
-    success = True
-    if status != 200:
-        print(f"Build {build} failed promotion with: {response.status_code}")
-        success = False
-    else:
-        rjson = response.json()
-        if rjson.get('error') is not None:
-            print(f"Build {build} failed promotion with error: {rjson['error']}")
+    success = mark_target_readonly(False, config)
+
+    if success is True:
+        print(f"Running promotion of: {build} to: {target_repo}")
+        response = requests.post(url, headers=headers, data=json.dumps(req), timeout=PROMOTE_TIMEOUT)
+        status = response.status_code
+        if status != 200:
+            print(f"Build {build} failed promotion with: {response.status_code}")
             success = False
+        else:
+            rjson = response.json()
+            if rjson.get('error') is not None:
+                print(f"Build {build} failed promotion with error: {rjson['error']}")
+                success = False
 
     if success is False:
         mark_failed(build, fail_file)
+        print("Promotion failed or incomplete.")
+    else:
+        print("Promotion succeeded!")
 
-    print("Promotion succeeded!")
+    mark_target_readonly(True, config)
     return status
 
 def get_group(config):
